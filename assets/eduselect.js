@@ -24,10 +24,9 @@ var EduSelect = {
 		    	for(var i in data.response) {
 		    		var item = data.response[i];
 
-		    		if (item.title == selectValue) {
+		    		if (item.title.toLowerCase() == selectValue.toLowerCase()) {
 		    			self.loadCity(item.cid);
 		    			select.html('<option selected="true" value="' + item.cid + '">' + item.title + '</option>');
-		    			self.init();
 
 		    			return;
 		    		}
@@ -54,12 +53,11 @@ var EduSelect = {
 		    	for(var i in data.response) {
 		    		var item = data.response[i];
 
-		    		if (item.title == selectValue) {
-		    			self.loadUniversity(item.cid);
+		    		if (item.title.toLowerCase() == selectValue.toLowerCase()) {
 		    			self.loadSchool(item.cid);
-
+		    			self.loadUniversity(item.cid);
+		    			
 		    			select.html('<option selected="true" value="' + item.cid + '">' + item.title + '</option>');
-		    			self.init();
 
 		    			return;
 		    		}
@@ -84,11 +82,14 @@ var EduSelect = {
 		    data: { lang: 'ru', q:  selectValue, city_id: cityId },
 		    success: function(data) {
 		    	for(var i in data.response) {
+		    		if (i == 0) {
+		    			continue;
+		    		}
+
 		    		var item = data.response[i];
 
-		    		if (item.title == selectValue) {
+		    		if (item.title.toLowerCase() == selectValue.toLowerCase()) {
 		    			select.html('<option selected="true" value="' + item.id + '">' + item.title + '</option>');
-		    			self.init();
 
 		    			return;
 		    		}
@@ -113,11 +114,14 @@ var EduSelect = {
 		    data: { lang: 'ru', q:  selectValue, city_id: cityId },
 		    success: function(data) {
 		    	for(var i in data.response) {
+		    		if (i == 0) {
+		    			continue;
+		    		}
+
 		    		var item = data.response[i];
 
-		    		if (item.title == selectValue) {
+		    		if (item.title.toLowerCase() == selectValue.toLowerCase()) {
 		    			select.html('<option selected="true" value="' + item.id + '">' + item.title + '</option>');
-		    			self.init();
 
 		    			return;
 		    		}
@@ -334,6 +338,7 @@ var EduSelect = {
 		    },
 		    processResults: function (data, params) {
 		    	var results = $.map(data.response, function (item) {
+		    		if (item)
                     return {
                         text: item.title,
                         id: item.id
