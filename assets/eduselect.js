@@ -28,7 +28,7 @@ var EduSelect = {
 		    			self.loadCity(item.cid);
 		    			select.html('<option selected="true" value="' + item.cid + '">' + item.title + '</option>');
 		    			self.init();
-		    			
+
 		    			return;
 		    		}
 		    	}
@@ -128,7 +128,12 @@ var EduSelect = {
 
 	init: function() {
 		this.initCountrySelect();
+		this.initCitySelect();
+		this.initUniversitySelect();
+		this.initSchoolSelect();
+	},
 
+	toggleSelects: function() {
 		if (this.getCountryId() == 0) {
 			$(this.options.citySelect).hide(0);
 			$(this.options.universitySelect).hide(0);
@@ -137,17 +142,12 @@ var EduSelect = {
 			return;
 		}
 
-		this.initCitySelect();
-		
 		$(this.options.citySelect).show(0);
 
 		if (this.getCityId() == 0) {
 			$(this.options.schoolSelect).hide(0);
 			return;
 		}
-
-		this.initUniversitySelect();
-		this.initSchoolSelect();
 
 		$(this.options.universitySelect).show(0);
 		$(this.options.schoolSelect).show(0);
@@ -157,18 +157,18 @@ var EduSelect = {
 		var self = this;
 
 		$(this.options.countrySelect).on('change', function(e) {
-			self.init();
+			self.toggleSelects();
 		});
 		$(this.options.citySelect).on('change', function(e) {
-			self.init();
+			self.toggleSelects();
 		});
 
 		$(this.options.universitySelect).on('change', function(e) {
-			self.init();
+			self.toggleSelects();
 		});
 
 		$(this.options.schoolSelect).on('change', function(e) {
-			self.init();
+			self.toggleSelects();
 		});
 	},
 
@@ -229,9 +229,7 @@ var EduSelect = {
 		    dataType: 'json',
 		    delay: 250,
 		    data: function (params) {
-		      return {
-		        lang: 'ru'
-		      };
+		      return {lang: 'ru'};
 		    },
 		    processResults: function (data, params) {
 		    	var results = $.map(data.response, function (item) {
@@ -241,9 +239,7 @@ var EduSelect = {
                     };
                 });
 
-	            return {
-	                results: results 
-	            };
+	            return {results: results};
 		    },
 		    cache: true
 		  },
