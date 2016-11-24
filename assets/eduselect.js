@@ -163,9 +163,17 @@ var EduSelect = {
 
 		$(this.options.countrySelect).on('change', function(e) {
 			self.toggleSelects();
+			$(self.options.citySelect).val('');
+
+			$(self.options.citySelect).trigger('change');
 		});
 		$(this.options.citySelect).on('change', function(e) {
 			self.toggleSelects();
+			$(self.options.universitySelect).val('');
+			$(self.options.schoolSelect).val('');
+
+			$(self.options.universitySelect).trigger('change');
+			$(self.options.schoolSelect).trigger('change');
 		});
 
 		$(this.options.universitySelect).on('change', function(e) {
