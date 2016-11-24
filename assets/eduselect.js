@@ -3,7 +3,8 @@ var EduSelect = {
 		countrySelect: '.js-eduselect-country',
 		citySelect: '.js-eduselect-city',
 		universitySelect: '.js-eduselect-university',
-		schoolSelect: '.js-eduselect-school'
+		schoolSelect: '.js-eduselect-school',
+		apiUrl: 'https://crossorigin.me/https://api.vk.com/method/'//vk_api_proxy.php?q='
 	},
 
 	loadValues: function() {
@@ -17,7 +18,7 @@ var EduSelect = {
 
 		$.ajax({
 			method: 'GET',
-		    url: "https://crossorigin.me/https://api.vk.com/method/database.getCountries",
+		    url: this.options.apiUrl + "database.getCountries",
 		    dataType: 'json',
 		    data: { lang: 'ru' },
 		    success: function(data) {
@@ -46,7 +47,7 @@ var EduSelect = {
 
 		$.ajax({
 			method: 'GET',
-		    url: "https://crossorigin.me/https://api.vk.com/method/database.getCities",
+		    url: this.options.apiUrl + "database.getCities",
 		    dataType: 'json',
 		    data: { lang: 'ru', q:  selectValue, country_id: countryId },
 		    success: function(data) {
@@ -77,7 +78,7 @@ var EduSelect = {
 
 		$.ajax({
 			method: 'GET',
-		    url: "https://crossorigin.me/https://api.vk.com/method/database.getUniversities",
+		    url: this.options.apiUrl + "database.getUniversities",
 		    dataType: 'json',
 		    data: { lang: 'ru', q:  selectValue, city_id: cityId },
 		    success: function(data) {
@@ -109,7 +110,7 @@ var EduSelect = {
 
 		$.ajax({
 			method: 'GET',
-		    url: "https://crossorigin.me/https://api.vk.com/method/database.getSchools",
+		    url: this.options.apiUrl + "database.getSchools",
 		    dataType: 'json',
 		    data: { lang: 'ru', q:  selectValue, city_id: cityId },
 		    success: function(data) {
@@ -229,14 +230,31 @@ var EduSelect = {
 		  placeholder: $(this.options.countrySelect).attr('data-placeholder'),
 		  ajax: {
 		  	method: 'GET',
-		    url: "https://crossorigin.me/https://api.vk.com/method/database.getCountries",
+		    url: this.options.apiUrl + "database.getCountries",
 		    dataType: 'json',
 		    delay: 250,
 		    data: function (params) {
 		      return {lang: 'ru'};
 		    },
 		    processResults: function (data, params) {
-		    	var results = $.map(data.response, function (item) {
+		    	var term = '';
+		    	var results = data.response;
+
+		    	if (params.term != 'undefined'
+		    		&& typeof params.term !== 'undefined'
+		    	) {
+		    		term = params.term.toLowerCase();
+		    	}
+
+		    	if (term != '' && term.length > 0) {
+			    	results = data.response.filter(function(item) {
+			    		//console.log(termRgxp);
+			    		return item.title.toLowerCase().startsWith(term);
+			    	});		    		
+		    	}
+
+
+		    	results = results.map(function (item) {
                     return {
                         text: item.title,
                         id: item.cid
@@ -258,7 +276,7 @@ var EduSelect = {
 		  placeholder: $(this.options.citySelect).attr('data-placeholder'),
 		  ajax: {
 		  	method: 'GET',
-		    url: "https://crossorigin.me/https://api.vk.com/method/database.getCities",
+		    url: this.options.apiUrl + "database.getCities",
 		    dataType: 'json',
 		    delay: 250,
 		    data: function (params) {
@@ -269,7 +287,7 @@ var EduSelect = {
 		      };
 		    },
 		    processResults: function (data, params) {
-		    	var results = $.map(data.response, function (item) {
+		    	var results = data.response.map(function (item) {
                     return {
                         text: item.title,
                         id: item.cid
@@ -292,7 +310,7 @@ var EduSelect = {
 		  placeholder: $(this.options.universitySelect).attr('data-placeholder'),
 		  ajax: {
 		  	method: 'GET',
-		    url: "https://crossorigin.me/https://api.vk.com/method/database.getUniversities",
+		    url: this.options.apiUrl + "database.getUniversities",
 		    dataType: 'json',
 		    delay: 250,
 		    data: function (params) {
@@ -303,7 +321,7 @@ var EduSelect = {
 		      };
 		    },
 		    processResults: function (data, params) {
-		    	var results = $.map(data.response, function (item) {
+		    	var results = data.response.map(function (item) {
                     return {
                         text: item.title,
                         id: item.id
@@ -326,7 +344,7 @@ var EduSelect = {
 		  placeholder: $(this.options.schoolSelect).attr('data-placeholder'),
 		  ajax: {
 		  	method: 'GET',
-		    url: "https://crossorigin.me/https://api.vk.com/method/database.getSchools",
+		    url: this.options.apiUrl + "database.getSchools",
 		    dataType: 'json',
 		    delay: 250,
 		    data: function (params) {
@@ -337,7 +355,7 @@ var EduSelect = {
 		      };
 		    },
 		    processResults: function (data, params) {
-		    	var results = $.map(data.response, function (item) {
+		    	var results = data.response.map(function (item) {
 		    		if (item)
                     return {
                         text: item.title,
