@@ -1,3 +1,21 @@
 select {
 	width: 300px;
 }
+
+.eduselect-box .loading-message{
+	display: none;
+	color: #777;
+	font-style: italic;
+}
+
+.eduselect-box .inputs{
+	display: block;
+}
+
+.eduselect-box.loading .loading-message{
+	display: block;
+}
+
+.eduselect-box.loading .inputs{
+	display: none;
+}

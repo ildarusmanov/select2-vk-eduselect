@@ -5,6 +5,8 @@
 
 		<meta charset="utf-8">
 
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
 		<script
 			  src="https://code.jquery.com/jquery-2.2.4.min.js"
 			  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
@@ -17,10 +19,22 @@
 	</head>
 	<body>
 
-		<select class="js-eduselect-country" data-value="Россия" data-placeholder="Выберите страну"></select>
-		<select class="js-eduselect-city" data-value="Москва" data-placeholder="Выберите город"></select>
-		<select class="js-eduselect-university" data-value="МГУ" data-placeholder="Выберите ВУЗ"></select>
-		<select class="js-eduselect-school" data-value="Аудио Школа Dj Грува" data-placeholder="Выберите школу"></select>
+		<div class="js-eduselect-box eduselect-box loading">
+			<div class="loading-message"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i>Загружается...</div>
+			<div class="inputs">
+				<select class="js-eduselect-country" data-value="Россия" data-placeholder="Выберите страну" data-target=".js-country-value"></select>
+				<select class="js-eduselect-city" data-value="Москва" data-placeholder="Выберите город"  data-target=".js-city-value"></select>
+				<select class="js-eduselect-university" data-value="МГУ" data-placeholder="Выберите ВУЗ"  data-target=".js-university-value"></select>
+				<select class="js-eduselect-school" data-value="Аудио Школа Dj Грува" data-placeholder="Выберите школу" data-target=".js-school-value"></select>
+
+				<hr/>
+				
+				<input type="text" class="js-country-value"/>
+				<input type="text" class="js-city-value"/>
+				<input type="text" class="js-university-value"/>
+				<input type="text" class="js-school-value"/>
+			</div>
+		</div>
 
 	</body>
 </html>

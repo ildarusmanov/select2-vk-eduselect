@@ -1,5 +1,7 @@
 var EduSelect = {
 	options: {
+		box: '.js-eduselect-box',
+		loadingClass: 'loading',
 		countrySelect: '.js-eduselect-country',
 		citySelect: '.js-eduselect-city',
 		universitySelect: '.js-eduselect-university',
@@ -32,6 +34,8 @@ var EduSelect = {
 		    			return;
 		    		}
 		    	}
+
+		    	self.showLoaded();
 		    }
 		});
 	},
@@ -60,9 +64,11 @@ var EduSelect = {
 		    			
 		    			select.html('<option selected="true" value="' + item.cid + '">' + item.title + '</option>');
 
-		    			return;
+		    			break;
 		    		}
 		    	}
+
+		    	self.showLoaded();
 		    }
 		});
 	},
@@ -92,9 +98,11 @@ var EduSelect = {
 		    		if (item.title.toLowerCase() == selectValue.toLowerCase()) {
 		    			select.html('<option selected="true" value="' + item.id + '">' + item.title + '</option>');
 
-		    			return;
+		    			break;
 		    		}
 		    	}
+
+		    	//self.showLoaded();
 		    }
 		});
 	},
@@ -124,21 +132,65 @@ var EduSelect = {
 		    		if (item.title.toLowerCase() == selectValue.toLowerCase()) {
 		    			select.html('<option selected="true" value="' + item.id + '">' + item.title + '</option>');
 
-		    			return;
+		    			break;
 		    		}
 		    	}
+
+		    	//self.showLoaded();
 		    }
 		});
 	},
 
 	init: function() {
+		this.showLoading();
 		this.initCountrySelect();
 		this.initCitySelect();
 		this.initUniversitySelect();
 		this.initSchoolSelect();
 	},
 
+	showLoading: function() {
+		$(this.options.box).addClass(this.options.loadingClass);
+		$(this.options.box).find('select input').attr('disabled', true);
+	},
+
+
+	showLoaded: function() {
+		$(this.options.box).removeClass(this.options.loadingClass);
+		$(this.options.box).find('select input').removeAttr('disabled');
+	},
+
+	syncTarget: function() {
+		var country = $(this.options.countrySelect);
+		var city = $(this.options.citySelect);
+		var university = $(this.options.universitySelect);
+		var school = $(this.options.schoolSelect);
+
+		var countryTarget = $(country.attr('data-target'));
+		var cityTarget = $(city.attr('data-target'));
+		var universityTarget = $(university.attr('data-target'));
+		var schoolTarget = $(school.attr('data-target'));
+
+		if (countryTarget.length > 0) {
+			countryTarget.val(country.find('option:selected').text());
+		}
+
+		if (cityTarget.length > 0) {
+			cityTarget.val(city.find('option:selected').text());
+		}
+
+		if (universityTarget.length > 0) {
+			universityTarget.val(university.find('option:selected').text());
+		}
+
+		if (schoolTarget.length > 0) {
+			schoolTarget.val(school.find('option:selected').text());
+		}
+	},
+
 	toggleSelects: function() {
+		this.syncTarget();
+
 		if (this.getCountryId() == 0) {
 			$(this.options.citySelect).hide(0);
 			$(this.options.universitySelect).hide(0);
@@ -379,10 +431,14 @@ var EduSelect = {
 		  }
 		});
 	},
+
+	start: function() {
+		this.init();
+		this.loadValues();
+		this.bindEvents();
+	}
 };
 
 $(document).ready(function(){
-	EduSelect.init();
-	EduSelect.loadValues();
-	EduSelect.bindEvents();
+	EduSelect.start();
 });
